@@ -1,0 +1,100 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mtx_cinema
+    restart: unless-stopped
+    working_dir: /var/www
+    env_file:
+      - .env
+    volumes:
+      - ./:/var/www
+    depends_on:
+      - db
+      - redis
+    networks:
+      - mtx_cinema_network
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mtx_cinema_worker
+    restart: unless-stopped
+    working_dir: /var/www
+    command: php artisan queue:work --verbose --tries=3 --timeout=120
+    env_file:
+      - .env
+    volumes:
+      - ./:/var/www
+    depends_on:
+      - db
+      - redis
+    networks:
+      - mtx_cinema_network
+
+  webserver:
+    image: nginx:alpine
+    container_name: mtx_cinema_webserver
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "8000:80"
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+      - worker
+    networks:
+      - mtx_cinema_network
+
+  db:
+    image: mysql:8.0
+    container_name: mtx_cinema_db
+    restart: unless-stopped
+    command: --log-bin-trust-function-creators=1
+    env_file:
+      - .env
+    ports:
+      - "3307:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - mtx_cinema_network
+
+  redis:
+    image: redis:7-alpine
+    container_name: mtx_cinema_redis
+    restart: unless-stopped
+    ports:
+      - "6385:6379"
+    volumes:
+      - redisdata:/data
+    networks:
+      - mtx_cinema_network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: mtx_cinema_phpmyadmin
+    restart: unless-stopped
+    env_file:
+      - .env
+    depends_on:
+      - db
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "8080:80"
+    networks:
+      - mtx_cinema_network
+
+networks:
+  mtx_cinema_network:
+
+volumes:
+  dbdata:
+  redisdata:
