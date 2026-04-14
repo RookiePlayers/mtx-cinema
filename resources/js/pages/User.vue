@@ -84,7 +84,7 @@ const changeScope = (scope: 'mine' | 'all') => {
                 :key="movie.id ?? movie.imdbId"
                 :movie-or-movie-id="movie"
                 size="medium"
-                @click="goToMoviePage(resolveMovieId(movie)??'')"
+                @click="goToMoviePage(String(resolveMovieId(movie) ?? movie.id ?? movie.imdbId ?? ''))"
             />
         </div>
         <div v-else class="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950">
