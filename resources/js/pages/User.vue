@@ -22,6 +22,7 @@ const savedMovies = computed(() => props.savedMovies ?? []);
 const viewMode = ref<'grid' | 'table'>('grid');
 const activeScope = computed(() => props.scope ?? 'mine');
 const goToMoviePage = (movie: Movie) => {
+    console.log('Navigating to movie page with ID:', movie);
     router.get(`/movies/${resolveMovieId(movie) ?? movie.id ?? movie.imdbId ?? ''}`);
 };
 
