@@ -54,12 +54,21 @@ we must ensure that we only fetch API page 1 during the request and persist addi
 
 - App: PHP-FPM container
 - Web: Nginx on `http://127.0.0.1:8000`
-- Web UI: Vite dev server on `http://127.0.0.1:5173`
 - MySQL: `127.0.0.1:3307`
 - phpMyAdmin: `http://127.0.0.1:8080`
 - Redis: `127.0.0.1:6379`
 
 ### First Start
+
+#### Environment
+
+Copy the .env.template into .env
+
+set the following:
+
+```bash
+MOVIE_API_KEY=
+```
 
 Build and start the stack:
 
@@ -71,12 +80,6 @@ Install PHP dependencies inside the app container:
 
 ```bash
 docker compose -f dockerfile-compose.yml exec app composer install
-```
-
-Install and start frontend dependencies inside Docker:
-
-```bash
-make dev
 ```
 
 Generate the application key if needed:
@@ -123,12 +126,6 @@ Follow app logs:
 make logs
 ```
 
-Follow frontend logs:
-
-```bash
-make web-ui-logs
-```
-
 Run migrations:
 
 ```bash
@@ -141,9 +138,15 @@ Destroy containers, volumes, and the Docker network:
 make destroy
 ```
 
+### Running the app
+
+```bash
+make up
+```
+The 
+site should be available on http://127.0.0.1:8000
+
 ### Notes
 
 - The app uses the Docker service names from `.env`, so Laravel connects to MySQL via `db` and Redis via `redis`.
-- `make up` now starts the full stack, including the `web-ui` Vite container.
-- `make dev` now behaves like `make up`, with the frontend dev server running inside Docker instead of on the host.
 - The custom Docker network `mtx_cinema_network` is created automatically by the `make build` and `make rebuild` targets.
