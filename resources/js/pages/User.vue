@@ -21,9 +21,8 @@ const user = computed(() => page.props.auth.user);
 const savedMovies = computed(() => props.savedMovies ?? []);
 const viewMode = ref<'grid' | 'table'>('grid');
 const activeScope = computed(() => props.scope ?? 'mine');
-
-const goToMoviePage = (movieId: string) => {
-    router.get(`/movies/${movieId}`);
+const goToMoviePage = (movie: Movie) => {
+    router.get(`/movies/${resolveMovieId(movie) ?? movie.id ?? movie.imdbId ?? ''}`);
 };
 
 const changeScope = (scope: 'mine' | 'all') => {
@@ -84,7 +83,7 @@ const changeScope = (scope: 'mine' | 'all') => {
                 :key="movie.id ?? movie.imdbId"
                 :movie-or-movie-id="movie"
                 size="medium"
-                @click="goToMoviePage(String(resolveMovieId(movie) ?? movie.id ?? movie.imdbId ?? ''))"
+                @click="goToMoviePage(movie)"
             />
         </div>
         <div v-else class="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950">
@@ -103,7 +102,7 @@ const changeScope = (scope: 'mine' | 'all') => {
                         v-for="movie in savedMovies"
                         :key="movie.id ?? movie.imdbId"
                         class="cursor-pointer transition hover:bg-gray-50 dark:hover:bg-gray-900"
-                        @click="goToMoviePage(movie.imdbId)"
+                        @click="goToMoviePage(movie)"
                     >
                         <td class="px-4 py-3 text-sm font-medium">{{ movie.title ?? 'Untitled' }}</td>
                         <td class="px-4 py-3 text-sm">{{ movie.savedByUserName ?? 'Unknown user' }}</td>
