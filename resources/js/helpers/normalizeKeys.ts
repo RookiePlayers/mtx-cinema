@@ -27,7 +27,8 @@ export const resolveMovieId = (movie: Movie | null, defaultId?: string | null): 
      const movieStrigified = JSON.parse(JSON.stringify(movie)); // Handle both cases just in case
 
     const movieId = movieStrigified ? movieStrigified.imdbId : movieStrigified.imdbID; // Handle both cases just in case
-
+    console.log('Resolved movie ID:', movieId);
+    
     return movieId ?? defaultId ?? null; // Fallback to defaultId if movie is not available
 
 }
