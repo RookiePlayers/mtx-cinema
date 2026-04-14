@@ -2,7 +2,7 @@ COMPOSE_FILE := dockerfile-compose.yml
 COMPOSE := docker compose -f $(COMPOSE_FILE)
 NETWORK := mtx_cinema_network
 
-.PHONY: up down build rebuild destroy network logs logs-api logs-api-100 worker-logs migrate dev new-migration worker worker-restart
+.PHONY: up down build rebuild destroy network logs logs-api logs-api-100 worker-logs web-ui-logs migrate dev new-migration worker worker-restart
 
 up:
 	$(COMPOSE) up -d
@@ -25,6 +25,9 @@ logs-api-100:
 worker-logs:
 	$(COMPOSE) logs -f worker
 
+web-ui-logs:
+	$(COMPOSE) logs -f web-ui
+
 migrate:
 	$(COMPOSE) exec app php artisan migrate
 
@@ -38,7 +41,6 @@ worker-restart:
 	$(COMPOSE) restart worker
 
 dev: up
-	npm run dev
 
 rebuild: network
 	$(COMPOSE) down

@@ -16,6 +16,22 @@ services:
     networks:
       - mtx_cinema_network
 
+  web-ui:
+    image: node:22-alpine
+    container_name: mtx_cinema_web_ui
+    restart: unless-stopped
+    working_dir: /var/www
+    command: sh -c "npm install && npm run dev"
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./:/var/www
+      - web_ui_node_modules:/var/www/node_modules
+    depends_on:
+      - app
+    networks:
+      - mtx_cinema_network
+
   worker:
     build:
       context: .
@@ -98,3 +114,4 @@ networks:
 volumes:
   dbdata:
   redisdata:
+  web_ui_node_modules:
