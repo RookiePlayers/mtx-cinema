@@ -69,6 +69,9 @@ class DBService
 
     public function getMovieById(string $id, ?int $userId, ?string $guestToken): ?Movie
     {
+        if($id === 'undefined') {
+            return null;
+        }
         $movie = Movie::query()->where('imdbId', $id)->first();
         if(!$movie) {
             $apiData = $this->omdbApiService->fetchMovieDetailsFromApi($id);
