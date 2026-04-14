@@ -27,3 +27,4 @@ yarn-error.log
 /.zed
 
 /clockit_backup_*.csv
+.env.b64

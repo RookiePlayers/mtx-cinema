@@ -10,7 +10,7 @@ up:
 down:
 	$(COMPOSE) down
 
-build: network
+build:
 	$(COMPOSE) build
 
 logs:
@@ -42,7 +42,7 @@ worker-restart:
 
 dev: up
 
-rebuild: network
+rebuild:
 	$(COMPOSE) down
 	$(COMPOSE) build --no-cache
 	$(COMPOSE) up -d
@@ -56,8 +56,4 @@ destroy:
 	fi
 
 network:
-	@if docker network inspect $(NETWORK) >/dev/null 2>&1; then \
-		echo "Docker network $(NETWORK) already exists."; \
-	else \
-		docker network create $(NETWORK); \
-	fi
+	@echo "Docker Compose manages the $(NETWORK) network automatically."
