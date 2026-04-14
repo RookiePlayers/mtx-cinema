@@ -17,7 +17,9 @@ services:
       - mtx_cinema_network
 
   web-ui:
-    image: node:22-alpine
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: mtx_cinema_web_ui
     restart: unless-stopped
     working_dir: /var/www
