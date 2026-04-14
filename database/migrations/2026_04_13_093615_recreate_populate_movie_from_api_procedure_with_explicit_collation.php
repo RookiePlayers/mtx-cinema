@@ -35,7 +35,7 @@ return new class extends Migration
                 START TRANSACTION;
 
                 INSERT INTO movies (
-                    title, imdbID, year, rated, runtime, genre,
+                    title, imdbId, year, rated, runtime, genre,
                     actors, plot, poster, languages, imdbRating, user_id,
                     created_at, updated_at
                 )
@@ -60,7 +60,7 @@ return new class extends Migration
 
                 SELECT id INTO v_movie_id
                 FROM movies
-                WHERE imdbID COLLATE utf8mb4_unicode_ci = CONVERT(p_imdb_id USING utf8mb4) COLLATE utf8mb4_unicode_ci
+                WHERE imdbId COLLATE utf8mb4_unicode_ci = CONVERT(p_imdb_id USING utf8mb4) COLLATE utf8mb4_unicode_ci
                 LIMIT 1;
 
                 INSERT INTO movie_dump (imdbId, movie_id, total_movies, created_at, updated_at)

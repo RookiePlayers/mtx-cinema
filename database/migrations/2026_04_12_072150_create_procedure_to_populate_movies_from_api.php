@@ -40,7 +40,7 @@ return new class extends Migration
                 START TRANSACTION;
 
                 INSERT INTO movies (
-                    title, imdbID, year, rated, runtime, genre,
+                    title, imdbId, year, rated, runtime, genre,
                     actors, plot, poster, languages, imdbRating,user_id,
                     created_at, updated_at
                 )
@@ -64,7 +64,7 @@ return new class extends Migration
 
                 SELECT id INTO v_movie_id
                 FROM movies
-                WHERE imdbID = p_imdb_id
+                WHERE imdbId = p_imdb_id
                 LIMIT 1;
 
                 INSERT INTO movie_dump (imdbId, movie_id, total_movies, created_at, updated_at)

@@ -3,6 +3,7 @@ import { Head, useForm, usePage } from '@inertiajs/vue3';
 import { computed, ref, watch } from 'vue';
 import AuthTextField from '@/Components/auth/AuthTextField.vue';
 import MovieCard from '@/Components/common/MovieCard.vue';
+import { normalizeKeys } from '@/helpers/normalizeKeys';
 import { theme } from '@/theme';
 import type { Auth } from '@/types';
 import type { Movie } from '@/types/movies';
@@ -16,7 +17,7 @@ const props = defineProps<{
 
 const page = usePage<{ auth: Auth }>();
 const user = computed(() => page.props.auth.user);
-const movie = computed(() => props.movie ?? null);
+const movie = computed(() => props.movie ? normalizeKeys(props.movie) : null);
 const pageTitle = computed(() => movie.value?.title ?? 'Movie');
 const saveForm = useForm({});
 const isEditing = ref(false);
