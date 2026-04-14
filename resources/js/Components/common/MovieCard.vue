@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { normalizeKeys } from '@/helpers/normalizeKeys';
 import type { Movie } from '@/types/movies';
 
     const props = defineProps<{
@@ -13,7 +12,7 @@ import type { Movie } from '@/types/movies';
             return null; // Placeholder, implement fetching logic if necessary
         }
 
-        return normalizeKeys(props.movieOrMovieId);
+        return (props.movieOrMovieId);
     });
     const sizeClasses = computed(() => {
         switch (props.size) {
