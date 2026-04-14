@@ -31,7 +31,7 @@ class MovieController extends Controller
             ? ($existingGuestToken ?? Str::uuid()->toString())
             : null;
         $movie = $this->dbService->getMovieById($id, $userId, $guestToken);
-        $isSaved = $movie !== null && $userId !== null
+        $isSaved = $movie !== null && is_string($movie->imdbId) && $movie->imdbId !== '' && $userId !== null
             ? $this->dbService->isMovieSavedForUser($movie->imdbId, $userId)
             : false;
 
