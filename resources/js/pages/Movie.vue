@@ -3,6 +3,7 @@ import { Head, useForm, usePage } from '@inertiajs/vue3';
 import { computed, ref, watch } from 'vue';
 import AuthTextField from '@/Components/auth/AuthTextField.vue';
 import MovieCard from '@/Components/common/MovieCard.vue';
+import { resolveMovieId } from '@/helpers/normalizeKeys';
 import { theme } from '@/theme';
 import type { Auth } from '@/types';
 import type { Movie } from '@/types/movies';
@@ -21,11 +22,7 @@ const pageTitle = computed(() => movie.value?.title ?? 'Movie');
 const saveForm = useForm({});
 const isEditing = ref(false);
 const movieId = computed(() => {
-     const movieStrigified = JSON.parse(JSON.stringify(movie.value)); // Handle both cases just in case
-
-    const movieId = movieStrigified ? movieStrigified.imdbId : movieStrigified.imdbID; // Handle both cases just in case
-
-    return movieId ?? props.movieId; // Fallback to prop if movie is not available
+    return resolveMovieId(movie.value, props.movieId);
 });
 
 const editForm = useForm({

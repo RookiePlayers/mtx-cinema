@@ -5,6 +5,7 @@ import type {Ref} from 'vue';
 import MovieCard from '@/Components/common/MovieCard.vue';
 import MTXTextField from '@/Components/common/MTXTextField.vue';
 import PaginatedPageShell from '@/Components/PaginatedPageShell.vue';
+import { resolveMovieId } from '@/helpers/normalizeKeys';
 import { useFuture } from '@/hooks/useFetch';
 import { useMovies } from '@/hooks/useMovies';
 import { theme } from '@/theme';
@@ -112,7 +113,7 @@ const goToMoviePage = (movieId: string) => {
                         v-for="movie in (items as Movie[])"
                         :key="movie.id"
                         :movie-or-movie-id="movie"
-                        @click="goToMoviePage(movie.imdbId)"
+                        @click="goToMoviePage(resolveMovieId(movie)??'')"
                         size="medium"
                     />
                 </div>
