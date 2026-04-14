@@ -70,23 +70,10 @@ class DBService
     public function getMovieById(string $id, ?int $userId, ?string $guestToken): ?Movie
     {
         $movie = Movie::query()->where('imdbId', $id)->first();
-        if (! $movie) {
+        if(!$movie) {
             $apiData = $this->omdbApiService->fetchMovieDetailsFromApi($id);
-            $movie = $apiData ? new Movie([
-                'title' => $apiData['Title'] ?? null,
-                'imdbId' => $apiData['imdbID'] ?? $apiData['imdbId'] ?? null,
-                'year' => $apiData['Year'] ?? null,
-                'rated' => $apiData['Rated'] ?? null,
-                'runtime' => $apiData['Runtime'] ?? null,
-                'genre' => $apiData['Genre'] ?? null,
-                'actors' => $apiData['Actors'] ?? null,
-                'plot' => $apiData['Plot'] ?? null,
-                'poster' => $apiData['Poster'] ?? null,
-                'languages' => $apiData['Language'] ?? $apiData['languages'] ?? null,
-                'imdbRating' => $apiData['imdbRating'] ?? null,
-            ]) : null;
-
-            if ($apiData && isset($apiData['imdbID']) && $userId) {
+            $movie = $apiData ? new Movie($apiData) : null;
+            if ($apiData && isset($movie['imdbId']) && $userId) {
                 $this->moviePresistanceService->saveMovieFromApi($apiData, $userId ?? 0);
             }
         }
