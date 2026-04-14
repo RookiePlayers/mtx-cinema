@@ -63,6 +63,7 @@ const toggleSavedMovie = () => {
         return;
     }
 
+    console.log('Saving movie with ID:', movie.value);
     saveForm.post(`/movies/${movie.value.imdbId}/save`, {
         preserveScroll: true,
     });
