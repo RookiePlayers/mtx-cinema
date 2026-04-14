@@ -7,6 +7,7 @@ use App\Models\PaginationInput;
 use App\Services\DBService;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class MovieController extends Controller
@@ -55,7 +56,7 @@ class MovieController extends Controller
     public function save(Request $request, string $id)
     {
         $userId = $request->user()?->id;
-
+        Log::info('Attempting to save movie', ['movieId' => $id, 'userId' => $userId]);
         abort_unless($userId !== null, 403);
 
         $movie = $this->dbService->saveMovieForUser($id, $userId);
