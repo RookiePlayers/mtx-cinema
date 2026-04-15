@@ -17,10 +17,10 @@ logs:
 	$(COMPOSE) logs -f app
 
 logs-api:
-	tail -f storage/logs/laravel.log
+	$(COMPOSE) exec app sh -lc "tail -f storage/logs/laravel.log"
 
 logs-api-100:
-	tail -n 100 -f storage/logs/laravel.log
+	$(COMPOSE) exec app sh -lc "tail -n 100 -f storage/logs/laravel.log"
 
 worker-logs:
 	$(COMPOSE) logs -f worker
